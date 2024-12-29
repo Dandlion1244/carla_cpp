@@ -305,15 +305,25 @@ void ACityMapGenerator::GenerateRoadMap()
     }
   }
 
+// 如果WITH_EDITOR宏被定义，表示当前处于编辑器模式
 #if WITH_EDITOR
+  // 调用RoadMap对象的Log函数，可能用于记录地图信息或调试信息
   RoadMap->Log();
 #endif // WITH_EDITOR
 
+  // 检查是否需要将RoadMap保存到磁盘
   if (bSaveRoadMapToDisk) {
+    // 调用RoadMap对象的SaveAsPNG函数，将地图保存为PNG图片
+    // FPaths::ProjectSavedDir()提供项目保存目录的路径
+    // World->GetMapName()获取当前世界地图的名称
     RoadMap->SaveAsPNG(FPaths::ProjectSavedDir(), World->GetMapName());
   }
 
+  // 如果WITH_EDITOR宏被定义，表示当前处于编辑器模式
 #if WITH_EDITOR
+  // 调用RoadMap对象的DrawDebugPixelsToLevel函数，用于在编辑器中绘制调试像素
+  // GetWorld()获取当前世界对象
+  // !bDrawDebugPixelsToLevel根据bDrawDebugPixelsToLevel的值决定是否绘制调试像素
   RoadMap->DrawDebugPixelsToLevel(GetWorld(), !bDrawDebugPixelsToLevel);
 #endif // WITH_EDITOR
 }
