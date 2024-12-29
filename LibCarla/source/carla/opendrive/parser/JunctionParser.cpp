@@ -95,24 +95,31 @@ namespace parser {
     }
 
     // 填充地图生成器
-    for (auto &junction : junctions) {
-      map_builder.AddJunction(junction.id, junction.name);
-      for (auto &connection : junction.connections) {
-        map_builder.AddConnection(
-            junction.id,
-            connection.id,
-            connection.incoming_road,
-            connection.connecting_road);
-        for (auto &lane_link : connection.lane_links) {
-          map_builder.AddLaneLink(junction.id,
-              connection.id,
-              lane_link.from,
-              lane_link.to);
-        }
-      }
-      map_builder.AddJunctionController(junction.id, std::move(junction.controllers));
+  // 遍历所有的路口（junctions）
+for (auto &junction : junctions) {
+  // 向地图构建器（map_builder）添加一个路口，包括路口的id和名称
+  map_builder.AddJunction(junction.id, junction.name);
+  // 遍历当前路口的所有连接
+  for (auto &connection : junction.connections) {
+    // 向地图构建器添加一个连接，包括连接的起点路口id、终点路口id、进入道路和连接道路
+    map_builder.AddConnection(
+        junction.id,
+        connection.id,
+        connection.incoming_road,
+        connection.connecting_road);
+    // 遍历当前连接的所有车道链接（lane_links）
+    for (auto &lane_link : connection.lane_links) {
+      // 向地图构建器添加一个车道链接，包括路口id、连接id、车道的起始位置和结束位置
+      map_builder.AddLaneLink(junction.id,
+          connection.id,
+          lane_link.from,
+          lane_link.to);
     }
   }
+  // 向地图构建器添加一个路口控制器，并将当前路口的控制器移动到构建器中
+  // 使用std::move是因为控制器在添加后不再需要，这样可以提高效率
+  map_builder.AddJunctionController(junction.id, std::move(junction.controllers));
+}
 } // namespace parser
 } // namespace opendrive
 } // namespace carla
