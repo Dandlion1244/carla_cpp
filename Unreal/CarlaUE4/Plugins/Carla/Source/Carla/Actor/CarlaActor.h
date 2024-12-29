@@ -205,32 +205,46 @@ public:
   {
     return ECarlaServerResponse::ActorTypeMismatch;
   }
+// 一个虚函数，用于获取车辆的故障状态
+// 参数：carla::rpc::VehicleFailureState&，一个引用，用于输出车辆的故障状态
+// 返回值：ECarlaServerResponse::ActorTypeMismatch，表示函数调用时Actor类型不匹配
+virtual ECarlaServerResponse GetFailureState(carla::rpc::VehicleFailureState& outFailureState)
+{
+  return ECarlaServerResponse::ActorTypeMismatch;
+}
 
-  virtual ECarlaServerResponse GetFailureState(carla::rpc::VehicleFailureState&)
-  {
-    return ECarlaServerResponse::ActorTypeMismatch;
-  }
+// 一个虚函数，用于获取车辆的灯光状态
+// 参数：FVehicleLightState&，一个引用，用于输出车辆的灯光状态
+// 返回值：ECarlaServerResponse::ActorTypeMismatch，表示函数调用时Actor类型不匹配
+virtual ECarlaServerResponse GetVehicleLightState(FVehicleLightState& outLightState)
+{
+  return ECarlaServerResponse::ActorTypeMismatch;
+}
 
-  virtual ECarlaServerResponse GetVehicleLightState(FVehicleLightState&)
-  {
-    return ECarlaServerResponse::ActorTypeMismatch;
-  }
+// 一个虚函数，用于打开车辆的门
+// 参数：const EVehicleDoor，一个枚举值，表示要打开的门
+// 返回值：ECarlaServerResponse::ActorTypeMismatch，表示函数调用时Actor类型不匹配
+virtual ECarlaServerResponse OpenVehicleDoor(const EVehicleDoor doorToOpen)
+{
+  return ECarlaServerResponse::ActorTypeMismatch;
+}
 
-  virtual ECarlaServerResponse OpenVehicleDoor(const EVehicleDoor)
-  {
-    return ECarlaServerResponse::ActorTypeMismatch;
-  }
+// 一个虚函数，用于关闭车辆的门
+// 参数：const EVehicleDoor，一个枚举值，表示要关闭的门
+// 返回值：ECarlaServerResponse::ActorTypeMismatch，表示函数调用时Actor类型不匹配
+virtual ECarlaServerResponse CloseVehicleDoor(const EVehicleDoor doorToClose)
+{
+  return ECarlaServerResponse::ActorTypeMismatch;
+}
 
-  virtual ECarlaServerResponse CloseVehicleDoor(const EVehicleDoor)
-  {
-    return ECarlaServerResponse::ActorTypeMismatch;
-  }
-
-  virtual ECarlaServerResponse ApplyPhysicsControl(const FVehiclePhysicsControl&)
-  {
-    return ECarlaServerResponse::ActorTypeMismatch;
-  }
-
+// 一个虚函数，用于应用物理控制到车辆
+// 参数：const FVehiclePhysicsControl&，一个引用，包含要应用的物理控制参数
+// 返回值：ECarlaServerResponse::ActorTypeMismatch，表示函数调用时Actor类型不匹配
+virtual ECarlaServerResponse ApplyPhysicsControl(const FVehiclePhysicsControl& physicsControl)
+{
+  return ECarlaServerResponse::ActorTypeMismatch;
+}
+ 
   virtual ECarlaServerResponse SetVehicleLightState(const FVehicleLightState&)
   {
     return ECarlaServerResponse::ActorTypeMismatch;
