@@ -8,20 +8,35 @@
 
 #include "carla/opendrive/parser/RoadParser.h"
 
+// 包含Carla项目的日志功能头文件
 #include "carla/Logging.h"
+// 包含Carla项目的字符串工具头文件
 #include "carla/StringUtil.h"
+// 包含Carla项目的地图构建器头文件，用于道路和路口的构建
 #include "carla/road/MapBuilder.h"
+// 包含Carla项目的路类型头文件，定义了道路相关的基础类型
 #include "carla/road/RoadTypes.h"
 
+// 包含pugixml库的头文件，用于解析XML文件
 #include <pugixml/pugixml.hpp>
 
+// 定义命名空间carla
 namespace carla {
-namespace opendrive {
-namespace parser {
+  // 定义命名空间opendrive
+  namespace opendrive {
+    // 定义命名空间parser
+    namespace parser {
 
-  using RoadId = road::RoadId;
-  using LaneId = road::LaneId;
-  using JuncId = road::JuncId;
+      // 使用carla::road命名空间中的RoadId类型
+      using RoadId = road::RoadId;
+      // 使用carla::road命名空间中的LaneId类型
+      using LaneId = road::LaneId;
+      // 使用carla::road命名空间中的JuncId类型
+      using JuncId = road::JuncId;
+
+    } // namespace parser
+  } // namespace opendrive
+} // namespace carla
 
   // 三次多项式的线性 v_{local} = a + b * du + c * du^2 + d * du^3
   struct Polynomial {
