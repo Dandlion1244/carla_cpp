@@ -22,29 +22,42 @@ namespace parser {
 
     std::vector<road::element::CrosswalkPoint> points;
 
-    for (pugi::xml_node node_road : xml.child("OpenDRIVE").children("road")) {
+    // 遍历XML文件中所有的"road"节点
+for (pugi::xml_node node_road : xml.child("OpenDRIVE").children("road")) {
 
-      // 解析所有的对象
-      pugi::xml_node node_objects = node_road.child("objects");
-      if (node_objects) {
+  // 获取当前"road"节点下的"objects"子节点
+  pugi::xml_node node_objects = node_road.child("objects");
+  // 如果"objects"节点存在
+  if (node_objects) {
 
-        for (pugi::xml_node node_object : node_objects.children("object")) {
+    // 遍历"objects"节点下所有的"object"子节点
+    for (pugi::xml_node node_object : node_objects.children("object")) {
 
-          // 人行横道 Crosswalk 类型 
-          std::string type = node_object.attribute("type").as_string();
-          std::string name = node_object.attribute("name").as_string();
-          if (type == "crosswalk") {
+      // 获取当前"object"节点的"type"和"name"属性
+      std::string type = node_object.attribute("type").as_string();
+      std::string name = node_object.attribute("name").as_string();
+      // 如果对象类型为"crosswalk"（人行横道）
+      if (type == "crosswalk") {
 
-              // 读取所有的点
-              pugi::xml_node node_outline = node_object.child("outline");
-              if (node_outline) {
-                points.clear();
-                for (pugi::xml_node node_corner : node_outline.children("cornerLocal")) {
-                  points.emplace_back(node_corner.attribute("u").as_double(),
-                                      node_corner.attribute("v").as_double(),
-                                      node_corner.attribute("z").as_double());
-                }
-              }
+        // 获取当前"object"节点下的"outline"子节点
+        pugi::xml_node node_outline = node_object.child("outline");
+        // 如果"outline"节点存在
+        if (node_outline) {
+          // 清空points容器，准备存储新的点数据
+          points.clear();
+          // 遍历"outline"节点下所有的"cornerLocal"子节点
+          for (pugi::xml_node node_corner : node_outline.children("cornerLocal")) {
+            // 将每个"cornerLocal"节点的"u", "v", "z"属性值添加到points容器中
+            // 这些值代表点的坐标
+            points.emplace_back(node_corner.attribute("u").as_double(),
+                                node_corner.attribute("v").as_double(),
+                                node_corner.attribute("z").as_double());
+          }
+        }
+      }
+    }
+  }
+}
             // 获取路的 id
             road::RoadId road_id = node_road.attribute("id").as_uint();
             road::Road *road = map_builder.GetRoad(road_id);
