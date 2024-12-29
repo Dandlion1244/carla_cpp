@@ -146,18 +146,23 @@
 #pragma push_macro("INTERNAL_DECORATOR")
 #undef INTERNAL_DECORATOR
 
+// 保存当前LLM_SCOPE_METAL宏的定义，并取消其定义
 #pragma push_macro("LLM_SCOPE_METAL")
 #undef LLM_SCOPE_METAL
 
+// 保存当前LLM_PLATFORM_SCOPE_METAL宏的定义，并取消其定义
 #pragma push_macro("LLM_PLATFORM_SCOPE_METAL")
 #undef LLM_PLATFORM_SCOPE_METAL
 
+// 保存当前METAL_DEBUG_OPTION宏的定义，并取消其定义
 #pragma push_macro("METAL_DEBUG_OPTION")
 #undef METAL_DEBUG_OPTION
 
+// 保存当前METAL_DEBUG_ONLY宏的定义，并取消其定义
 #pragma push_macro("METAL_DEBUG_ONLY")
 #undef METAL_DEBUG_ONLY
 
+// 保存当前METAL_DEBUG_LAYER宏的定义，并取消其定义
 #pragma push_macro("METAL_DEBUG_LAYER")
 #undef METAL_DEBUG_LAYER
 
