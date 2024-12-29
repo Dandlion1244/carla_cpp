@@ -194,24 +194,35 @@ void FCarlaActor::WakeActorUp(UCarlaEpisode* CarlaEpisode)
 
 FTransform FCarlaActor::GetActorLocalTransform() const
 {
-  if (IsDormant())
+ // 检查Actor是否处于休眠状态（Dormant）
+if (IsDormant())
+{
+  // 如果Actor处于休眠状态，直接返回Actor的变换信息
+  // ActorData->Rotation 表示Actor的旋转信息
+  // ActorData->Location.ToFVector() 表示Actor的位置信息，转换为FVector类型
+  // ActorData->Scale 表示Actor的缩放信息
+  return FTransform(
+      ActorData->Rotation,
+      ActorData->Location.ToFVector(),
+      ActorData->Scale);
+}
+else
+{
+  // 如果Actor不处于休眠状态，从Actor对象中获取其变换信息
+  FTransform Transform = GetActor()->GetActorTransform();
+
+  // 获取当前世界中的LargeMapManager对象，用于处理大地图逻辑
+  ALargeMapManager* LargeMap = UCarlaStatics::GetLargeMapManager(World);
+
+  // 如果LargeMapManager对象存在
+  if (LargeMap)
   {
-    FTransform Transform = FTransform(
-        ActorData->Rotation,
-        ActorData->Location.ToFVector(),
-        ActorData->Scale);
-    ALargeMapManager* LargeMap =
-        UCarlaStatics::GetLargeMapManager(World);
-    if (LargeMap)
-    {
-      Transform = LargeMap->GlobalToLocalTransform(Transform);
-    }
-    return Transform;
+    // 使用LargeMapManager将局部变换转换为全局变换
+    Transform = LargeMap->LocalToGlobalTransform(Transform);
   }
-  else
-  {
-    return GetActor()->GetActorTransform();
-  }
+
+  // 返回处理后的变换信息
+  return Transform;
 }
 
 FTransform FCarlaActor::GetActorGlobalTransform() const
