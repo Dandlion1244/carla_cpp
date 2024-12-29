@@ -225,24 +225,33 @@ else
   return Transform;
 }
 
+// FCarlaActor类中的成员函数，用于获取Actor的全局变换
 FTransform FCarlaActor::GetActorGlobalTransform() const
 {
+  // 如果Actor处于休眠状态（Dormant），则直接返回Actor数据中的全局变换
   if (IsDormant())
   {
+    // 返回一个FTransform对象，包含Actor的旋转、位置和缩放
     return FTransform(
-        ActorData->Rotation,
-        ActorData->Location.ToFVector(),
-        ActorData->Scale);
+        ActorData->Rotation,        // Actor的旋转
+        ActorData->Location.ToFVector(), // Actor的位置，转换为FVector类型
+        ActorData->Scale);         // Actor的缩放
   }
   else
   {
+    // 如果Actor不处于休眠状态，则从Actor对象中获取其局部变换
     FTransform Transform = GetActor()->GetActorTransform();
-    ALargeMapManager* LargeMap =
-        UCarlaStatics::GetLargeMapManager(World);
+
+    // 获取当前世界中的LargeMapManager对象，用于处理大地图逻辑
+    ALargeMapManager* LargeMap = UCarlaStatics::GetLargeMapManager(World);
+
+    // 如果LargeMapManager对象存在，则使用它将局部变换转换为全局变换
     if (LargeMap)
     {
       Transform = LargeMap->LocalToGlobalTransform(Transform);
     }
+
+    // 返回全局变换
     return Transform;
   }
 }
