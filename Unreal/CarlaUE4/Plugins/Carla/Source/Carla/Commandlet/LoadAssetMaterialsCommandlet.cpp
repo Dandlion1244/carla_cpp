@@ -5,19 +5,40 @@
 // For a copy, see <https://opensource.org/licenses/MIT>.
 
 #include "LoadAssetMaterialsCommandlet.h"
-
+// 如果项目配置中定义了WITH_EDITOR宏，则包含"FileHelpers.h"头文件
+// 这通常用于只在编辑器环境中需要的功能，而不是在最终游戏中
 #if WITH_EDITOR
 #include "FileHelpers.h"
 #endif
+
+// 包含Unreal Engine的文件帮助类头文件
 #include "Misc/FileHelper.h"
+
+// 包含Json对象处理的头文件
 #include "JsonObject.h"
+
+// 包含Json序列化处理的头文件
 #include "JsonSerializer.h"
+
+// 包含Unreal Engine的构造助手类头文件，用于帮助对象的构造
 #include "UObject/ConstructorHelpers.h"
+
+// 包含Unreal Engine的Kismet游戏逻辑静态调用类头文件
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+
+// 包含Unreal Engine的流媒体管理器类头文件
 #include "Engine/StreamableManager.h"
+
+// 包含Unreal Engine的静态网格Actor类头文件
 #include "Engine/StaticMeshActor.h"
+
+// 包含Carla项目的OpenDrive文件解析类头文件
 #include "Carla/OpenDrive/OpenDrive.h"
+
+// 包含Unreal Engine的贴花Actor类头文件
 #include "Engine/DecalActor.h"
+
+// 包含Unreal Engine的贴花组件类头文件
 #include "Components/DecalComponent.h"
 
 ULoadAssetMaterialsCommandlet::ULoadAssetMaterialsCommandlet()
