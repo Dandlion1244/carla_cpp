@@ -264,19 +264,41 @@ AActor* FTrafficLightData::RespawnActor(UCarlaEpisode* CarlaEpisode, const FActo
         SpawnParams);
 }
 
-void FTrafficLightData::RecordActorData(FCarlaActor* CarlaActor, UCarlaEpisode* CarlaEpisode)
+// FTrafficLightData类中的成员函数，用于恢复交通灯的数据
+void FTrafficLightData::RestoreActorData(FCarlaActor* CarlaActor, UCarlaEpisode* CarlaEpisode)
 {
-  FActorData::RecordActorData(CarlaActor, CarlaEpisode);
+  // 从FCarlaActor对象中获取对应的Unreal Actor
   AActor* Actor = CarlaActor->GetActor();
-  Model = Actor->GetClass();
+  
+  // 将Actor转换为ATrafficLightBase类型，这是Carla中交通灯的基础类
   ATrafficLightBase* TrafficLight = Cast<ATrafficLightBase>(Actor);
+  
+  // 从交通灯Actor中获取交通灯组件
   UTrafficLightComponent* Component = TrafficLight->GetTrafficLightComponent();
-  SignId = Component->GetSignId();
-  Controller = Component->GetController();
-  Controller->RemoveTrafficLight(Component);
-  Controller->AddCarlaActorTrafficLight(CarlaActor);
-  LightState = TrafficLight->GetTrafficLightState();
-  PoleIndex = TrafficLight->GetPoleIndex();
+  
+  // 设置交通灯组件的标志ID
+  Component->SetSignId(SignId);
+  
+  // 从控制器中移除CarlaActor的交通灯
+  Controller->RemoveCarlaActorTrafficLight(CarlaActor);
+  
+  // 将交通灯组件添加到控制器中
+  Controller->AddTrafficLight(Component);
+  
+  // 获取Carla游戏模式的基础类实例
+  ACarlaGameModeBase *GameMode = UCarlaStatics::GetGameMode(CarlaEpisode->GetWorld());
+  
+  // 使用游戏模式获取的地图信息初始化交通灯组件的标志
+  Component->InitializeSign(GameMode->GetMap().get());
+  
+  // 设置交通灯组件的灯光状态为控制器当前状态
+  Component->SetLightState(Controller->GetCurrentState().State);
+  
+  // 设置交通灯Actor的杆索引
+  TrafficLight->SetPoleIndex(PoleIndex);
+  
+  // 设置交通灯Actor的交通灯状态
+  TrafficLight->SetTrafficLightState(LightState);
 }
 
 void FTrafficLightData::RestoreActorData(FCarlaActor* CarlaActor, UCarlaEpisode* CarlaEpisode)
